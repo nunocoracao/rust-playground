@@ -15,16 +15,14 @@
 ARG RUST_VERSION=1.67 
 FROM rust:${RUST_VERSION} AS build
 
-#define working dir
-WORKDIR /usr/src/app
+# Define working dir
+WORKDIR /app
 
-#Copy files to container
+# Copy files to container
 COPY . .
 
-RUN rustup target add x86_64-unknown-linux-musl
-
-#Build Rust application
-RUN cargo build --target x86_64-unknown-linux-musl --release
+# Build Rust application
+RUN cargo build --release
 
 ################################################################################
 # Create a new stage for running the application that contains the minimal
@@ -45,15 +43,16 @@ RUN adduser \
     --uid "${UID}" \
     appuser
 
-# Install dependencies
-RUN apt-get update & apt-get install -y extra-runtime-dependencies & rm -rf /var/lib/apt/lists/*
-
 # Copy the executable from the "build" stage.
-COPY --from=build /usr/src/app/target/x86_64-unknown-linux-musl/release/rustwebservice rustwebservice
+COPY --from=build /app/target/release/helloworld helloworld
+
+# Configure rocket to listen on all interfaces.
+ENV ROCKET_ADDRESS=0.0.0.0
 
 # Expose the port that the application listens on.
-EXPOSE 8080
+EXPOSE 8000
 
 # What the container should run when it is started.
-CMD ["rustwebservice"]
+CMD ["./helloworld"]
 
+# write me a dockerfile for rust with multi-stage builds
