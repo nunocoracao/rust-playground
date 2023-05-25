@@ -1,3 +1,5 @@
 # rust-playground
 
-https://medium.com/@jaya.p/helloworld-with-rust-rest-api-web-service-in-kubernetes-c0d5d986e161
+Example of helloworld API in Rust using Rocket (https://rocket.rs/)
+
+Dockerfile and Compose file included
