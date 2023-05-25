@@ -54,5 +54,3 @@ EXPOSE 8000
 
 # What the container should run when it is started.
 CMD ["./helloworld"]
-
-# write me a dockerfile for rust with multi-stage builds
